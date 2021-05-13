@@ -1,0 +1,30 @@
+{
+  "name": "minibus-backend",
+  "version": "1.0.0",
+  "description": "backend for minibus aggregator app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaxioN03/minibus-backend.git"
+  },
+  "author": "MaxiApp",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MaxioN03/minibus-backend/issues"
+  },
+  "homepage": "https://github.com/MaxioN03/minibus-backend#readme",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "moment": "^2.29.1",
+    "mongodb": "^3.6.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
