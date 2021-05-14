@@ -8,7 +8,7 @@ const stationRequest = require('./src/requests/stationsRequest');
 
 app.use(bodyParser.json());
 
-MongoClient.connect(process.env.DATABASE_URL, (err, database) => {
+MongoClient.connect(process.env.DATABASE_URI, (err, database) => {
   if (err) return console.log(err);
 
   routes(app, database);
