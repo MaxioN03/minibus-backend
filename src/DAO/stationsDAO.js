@@ -1,7 +1,7 @@
 let ObjectID = require('mongodb').ObjectID;
 
 const getAll = (db) => {
-  return db.db('minibus').collection('stations').find({}).toArray()
+  return db.db('minibus-app-backend').collection('stations').find({}).toArray()
       .then(response => {
         return response;
       })
@@ -14,7 +14,7 @@ const getOne = (db, id) => {
   const details = {'_id': new ObjectID(id)};
 
   return new Promise((resolve, reject) => {
-    db.db('minibus').collection('stations')
+    db.db('minibus-app-backend').collection('stations')
         .findOne(details, (error, response) => {
           if (error) {
             reject(error);
@@ -28,7 +28,7 @@ const getOne = (db, id) => {
 const create = (db, station) => {
 
   return new Promise((resolve, reject) => {
-    db.db('minibus').collection('stations')
+    db.db('minibus-app-backend').collection('stations')
         .insertOne(station, (error, response) => {
           if (error) {
             reject(error);
@@ -43,7 +43,7 @@ const remove = (db, id) => {
   const details = {'_id': new ObjectID(id)};
 
   return new Promise((resolve, reject) => {
-    db.db('minibus').collection('stations')
+    db.db('minibus-app-backend').collection('stations')
         .remove(details, (error, response) => {
           if (error) {
             reject(error);
@@ -59,7 +59,7 @@ const update = (db, id, station) => {
   const details = {'_id': new ObjectID(id)};
 
   return new Promise((resolve, reject) => {
-    db.db('minibus').collection('stations')
+    db.db('minibus-app-backend').collection('stations')
         .update(details, station, (error, response) => {
           if (error) {
             reject(error);
