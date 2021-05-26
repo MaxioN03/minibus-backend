@@ -3,8 +3,10 @@ const axios = require('axios');
 const ALFA_BUS_ARROW_TRIP_SPLITTER = ' -> ';
 
 const getAlfaBusTrips = (params) => {
+  let {from, to, date, operatorId} = params;
+  let {id: fromId, operatorKey: fromOperatorKey} = from;
+  let {id: toId, operatorKey: toOperatorKey} = to;
 
-  let {from, to, date} = params;
   const URLParams = new URLSearchParams();
   URLParams.append('date',
       `${date.split('-')[2]}-${date.split('-')[1]}-${date.split('-')[0]}`);
@@ -25,8 +27,8 @@ const getAlfaBusTrips = (params) => {
           let tripStations = route.split(ALFA_BUS_ARROW_TRIP_SPLITTER);
           let [tripFrom, tripTo] = tripStations;
 
-          return tripFrom === from
-              && tripTo === to
+          return tripFrom === fromOperatorKey
+              && tripTo === toOperatorKey
               && tripDate === date
               && +(new Date(datetime)) > +(new Date())
               && seats > 0;
@@ -38,17 +40,16 @@ const getAlfaBusTrips = (params) => {
               return datetime1.localeCompare(datetime2);
             })
             .map(trip => {
-              let {date: tripDate, route, seats, departure_time, price} = trip;
-              let tripStations = route.split(ALFA_BUS_ARROW_TRIP_SPLITTER);
+              let {date: tripDate, seats, departure_time, price} = trip;
 
               return {
-                from: tripStations[0],
-                to: tripStations[1],
+                from: fromId,
+                to: toId,
                 date: tripDate,
                 departureTime: departure_time,
                 freeSeats: seats,
-                price,
-                agent: 'alfabus',
+                price: +price,
+                agent: operatorId,
               };
             });
       });

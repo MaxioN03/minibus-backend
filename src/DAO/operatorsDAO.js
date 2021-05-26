@@ -1,7 +1,7 @@
 let ObjectID = require('mongodb').ObjectID;
 
 const getCollection = (db) => {
-  return db.db('minibus').collection('operators');
+  return db.db('minibus-app-backend').collection('operators');
 };
 
 const getAll = (db) => {

@@ -13,13 +13,10 @@ module.exports = function(app, db) {
 
     tripRequest.getTrips(db, tripParams)
         .then(response => {
-
-          console.log('response', response);
-
           res.send(response);
         })
         .catch(error => {
-          res.send(error);
+          res.status(500).send(`Error while getting trips:\n${error.stack}`);
         });
   });
 };
