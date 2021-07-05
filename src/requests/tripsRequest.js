@@ -7,10 +7,6 @@ const cache = require('memory-cache');
 const getTrips = (db, params) => {
   let {from, to, date} = params;
 
-  const getMinutesAfterMidnight = (time) => {
-    return +(time.split(':')[0]) * 60 + (time.split(':')[1]);
-  };
-
   let cacheKey = `${from}_${to}_${date}`;
 
   if (cache.get(cacheKey) !== null) {
@@ -78,10 +74,8 @@ const getTrips = (db, params) => {
                               return result;
                             }, [])
                             .sort((trip1, trip2) => {
-                              let departureTime1 = getMinutesAfterMidnight(
-                                  trip1.departureTime);
-                              let departureTime2 = getMinutesAfterMidnight(
-                                  trip2.departureTime);
+                              let departureTime1 = +new Date(trip1.departure);
+                              let departureTime2 = +new Date(trip2.departure);
 
                               return departureTime1 - departureTime2;
                             });

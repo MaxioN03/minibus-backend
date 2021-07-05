@@ -40,18 +40,20 @@ const getAlfaBusTrips = (params) => {
               return datetime1.localeCompare(datetime2);
             })
             .map(trip => {
-              let {date: tripDate, seats, departure_time, price} = trip;
+              let {date: tripDate, seats, datetime, price} = trip;
 
               return {
                 from: fromId,
                 to: toId,
                 date: tripDate,
-                departureTime: departure_time,
+                departure: datetime,
                 freeSeats: seats,
                 price: +price,
                 agent: operatorId,
               };
             });
+      }).catch(error => {
+
       });
 };
 
