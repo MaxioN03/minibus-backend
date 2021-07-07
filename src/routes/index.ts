@@ -1,11 +1,11 @@
 import stationsRoutes from './stationsRoutes';
-// const tripsRoutes = require('./tripsRoutes');
-// const operatorsRoutes = require('./operatorsRoutes');
+import operatorsRoutes from './operatorsRoutes';
+import tripsRoutes from './tripsRoutes';
 
 const routes = (app: any, db: any) => {
     stationsRoutes(app, db);
-    // tripsRoutes(app, db);
-    // operatorsRoutes(app, db);
+    operatorsRoutes(app, db);
+    tripsRoutes(app, db);
 };
 
 export default routes;

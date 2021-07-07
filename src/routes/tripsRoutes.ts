@@ -1,21 +1,21 @@
-const tripRequest = require('../requests/tripsRequest');
+import {getTrips} from "../requests/tripsRequest";
 
-const getTripParamsFromReq = (req) => {
+const getTripParamsFromReq = (req: any) => {
   let params = req.body;
   let {from, to, date, passengers} = params;
 
   return {from, to, date, passengers: +passengers};
 };
 
-module.exports = function(app, db) {
-  app.post('/trips', (req, res) => {
+export default function(app: any, db: any) {
+  app.post('/trips', (req: any, res: any) => {
     const tripParams = getTripParamsFromReq(req);
 
-    tripRequest.getTrips(db, tripParams)
-        .then(response => {
+    getTrips(db, tripParams)
+        .then((response: any) => {
           res.send(response);
         })
-        .catch(error => {
+        .catch((error: any) => {
           res.status(500).send(`Error while getting trips:\n${error.stack}`);
         });
   });

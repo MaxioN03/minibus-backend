@@ -1,4 +1,5 @@
-let ObjectID = require('mongodb').ObjectID;
+import mongodb from 'mongodb';
+let ObjectID = mongodb.ObjectID;
 
 const getCollection = (db: any) => {
   return db.db('minibus-app-backend').collection('stations');

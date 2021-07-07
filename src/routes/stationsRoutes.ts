@@ -1,6 +1,5 @@
 import {Request, Response} from "express";
-
-const stationRequest = require('../requests/stationsRequest');
+import {createStation, getAllStations, getStation, removeStation, updateStation} from "../requests/stationsRequest";
 
 const getIdFromReq = (req: Request) => {
     return req.params.id;
@@ -12,7 +11,7 @@ const getStationFromReq = (req: Request) => {
 
 export default function (app: any, db: any) {
     app.get('/stations', (req: Request, res: Response) => {
-        stationRequest.getAllStations(db)
+        getAllStations(db)
             .then((response: any) => {
                 res.send(response);
             })
@@ -24,7 +23,7 @@ export default function (app: any, db: any) {
     app.get('/stations/:id', (req: Request, res: Response) => {
         const id = getIdFromReq(req);
 
-        stationRequest.getStation(db, id)
+        getStation(db, id)
             .then((response: any) => {
                 res.send(response);
             })
@@ -36,7 +35,7 @@ export default function (app: any, db: any) {
     app.post('/stations', (req: Request, res: Response) => {
         const station = getStationFromReq(req);
 
-        stationRequest.createStation(db, station)
+        createStation(db, station)
             .then((response: any) => {
                 res.send(response);
             })
@@ -48,7 +47,7 @@ export default function (app: any, db: any) {
     app.delete('/stations/:id', (req: Request, res: Response) => {
         const id = getIdFromReq(req);
 
-        stationRequest.removeStation(db, id)
+        removeStation(db, id)
             .then((response: any) => {
                 res.send(response);
             })
@@ -61,7 +60,7 @@ export default function (app: any, db: any) {
         const id = getIdFromReq(req);
         const station = getStationFromReq(req);
 
-        stationRequest.updateStation(db, id, station)
+        updateStation(db, id, station)
             .then((response: any) => {
                 res.send(response);
             })

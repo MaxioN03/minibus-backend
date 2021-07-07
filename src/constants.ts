@@ -1,9 +1,9 @@
-const OPERATORS_NAMES = {
+export const OPERATORS_NAMES = {
   atlas: 'Атлас',
   alfabus: 'Alfa Bus'
 };
 
-const DAY_OF_WEEK_SHORT_TRANSLATIONS = {
+export const DAY_OF_WEEK_SHORT_TRANSLATIONS = {
   monday: {
     full: '',
     short: 'Пн',
@@ -34,15 +34,7 @@ const DAY_OF_WEEK_SHORT_TRANSLATIONS = {
   },
 };
 
-const ONE_SECOND = 1000;
-const ONE_MINUTE = 60 * ONE_SECOND;
+export const ONE_SECOND = 1000;
+export const ONE_MINUTE = 60 * ONE_SECOND;
 
-const MAX_VISIBILITY_DAYS = 14;
-
-module.exports = {
-  OPERATORS_NAMES,
-  ONE_SECOND,
-  ONE_MINUTE,
-  MAX_VISIBILITY_DAYS,
-  DAY_OF_WEEK_SHORT_TRANSLATIONS,
-};
+export const MAX_VISIBILITY_DAYS = 14;

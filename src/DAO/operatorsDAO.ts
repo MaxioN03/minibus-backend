@@ -1,24 +1,25 @@
-let ObjectID = require('mongodb').ObjectID;
+import mongodb from 'mongodb';
+let ObjectID = mongodb.ObjectID;
 
-const getCollection = (db) => {
+export const getCollection = (db: any) => {
   return db.db('minibus-app-backend').collection('operators');
 };
 
-const getAll = (db) => {
+export const getAll = (db: any) => {
   return getCollection(db).find({}).toArray()
-      .then(response => {
+      .then((response: any) => {
         return response;
       })
-      .catch(error => {
+      .catch((error: any) => {
         return error;
       });
 };
 
-const getOne = (db, id) => {
+export const getOne = (db: any, id: string) => {
   const details = {'_id': new ObjectID(id)};
 
   return new Promise((resolve, reject) => {
-    getCollection(db).findOne(details, (error, response) => {
+    getCollection(db).findOne(details, (error: any, response: any) => {
           if (error) {
             reject(error);
           } else {
@@ -28,10 +29,10 @@ const getOne = (db, id) => {
   });
 };
 
-const create = (db, operator) => {
+export const create = (db: any, operator: any) => {
 
   return new Promise((resolve, reject) => {
-    getCollection(db).insertOne(operator, (error, response) => {
+    getCollection(db).insertOne(operator, (error: any, response: any) => {
           if (error) {
             reject(error);
           } else {
@@ -41,11 +42,11 @@ const create = (db, operator) => {
   });
 };
 
-const remove = (db, id) => {
+export const remove = (db: any, id: string) => {
   const details = {'_id': new ObjectID(id)};
 
   return new Promise((resolve, reject) => {
-    getCollection(db).remove(details, (error, response) => {
+    getCollection(db).remove(details, (error: any, response: any) => {
           if (error) {
             reject(error);
           } else {
@@ -55,12 +56,12 @@ const remove = (db, id) => {
   });
 };
 
-const update = (db, id, operator) => {
+export const update = (db: any, id: string, operator: any) => {
 
   const details = {'_id': new ObjectID(id)};
 
   return new Promise((resolve, reject) => {
-    getCollection(db).update(details, operator, (error, response) => {
+    getCollection(db).update(details, operator, (error: any, response: any) => {
           if (error) {
             reject(error);
           } else {
@@ -68,12 +69,4 @@ const update = (db, id, operator) => {
           }
         });
   });
-};
-
-module.exports = {
-  getAll,
-  getOne,
-  create,
-  remove,
-  update,
 };
