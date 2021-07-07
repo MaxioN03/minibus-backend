@@ -2,9 +2,9 @@ const tripRequest = require('../requests/tripsRequest');
 
 const getTripParamsFromReq = (req) => {
   let params = req.body;
-  let {from, to, date} = params;
+  let {from, to, date, passengers} = params;
 
-  return {from, to, date};
+  return {from, to, date, passengers: +passengers};
 };
 
 module.exports = function(app, db) {

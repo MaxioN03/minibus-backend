@@ -5,9 +5,9 @@ const {OPERATORS_NAMES} = require('../constants');
 const cache = require('memory-cache');
 
 const getTrips = (db, params) => {
-  let {from, to, date} = params;
+  let {from, to, date, passengers} = params;
 
-  let cacheKey = `${from}_${to}_${date}`;
+  let cacheKey = `${from}_${to}_${date}_${passengers || 0}`;
 
   if (cache.get(cacheKey) !== null) {
     return new Promise((resolve) => {
@@ -48,6 +48,7 @@ const getTrips = (db, params) => {
                                 operatorKey: toStationOperatorsKeys[operator._id],
                               },
                               date,
+                              passengers,
                               operatorId: operator._id,
                             });
                           case OPERATORS_NAMES.alfabus:
@@ -61,6 +62,7 @@ const getTrips = (db, params) => {
                                 operatorKey: toStationOperatorsKeys[operator._id],
                               },
                               date,
+                              passengers,
                               operatorId: operator._id,
                             });
                         }

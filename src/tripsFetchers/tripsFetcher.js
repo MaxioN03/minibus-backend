@@ -1,4 +1,4 @@
-const {getAlfaBusTrips} = require('./AlfaBustripsFetcher');
+const {getAlfaBusTrips} = require('./AlfaBustripsFetcher/AlfaBustripsFetcher');
 const {getAtlasBusTrips} = require('./AtlasTripsFetcher');
 
 module.exports = {

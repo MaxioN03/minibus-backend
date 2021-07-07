@@ -15,6 +15,7 @@ const atlasBusTripsFetcher = (url, params) => {
     responseType: 'json',
   }).then(response => {
     let rides = response && response.data && response.data.rides || {};
+    let {from, to, operatorId, passengers} = params;
 
     if (rides.length === 0) {
       return atlasBusTripsFetcher(url, params);
@@ -22,14 +23,13 @@ const atlasBusTripsFetcher = (url, params) => {
       return rides
           .map(trip => {
             let {departure, freeSeats, price, arrival} = trip;
-            let {from, to, operatorId} = params;
 
             return {
               from,
               to,
               date: moment(departure).format('DD-MM-YYYY'),
               departure,
-              freeSeats: freeSeats,
+              freeSeats,
               price: price !== undefined && price !== null
                   ? +price.toFixed(2)
                   : null,
@@ -37,7 +37,7 @@ const atlasBusTripsFetcher = (url, params) => {
               arrival
             };
           })
-          .filter(trip => trip.freeSeats > 0);
+          .filter(trip => passengers ? trip.freeSeats >= passengers : trip.freeSeats > 0);
     }
   })
       .catch(error => {
@@ -46,7 +46,7 @@ const atlasBusTripsFetcher = (url, params) => {
 };
 
 const getAtlasBusTrips = (params) => {
-  let {from, to, date, operatorId} = params;
+  let {from, to, date, operatorId, passengers} = params;
   let {id: fromId, operatorKey: fromOperatorKey} = from;
   let {id: toId, operatorKey: toOperatorKey} = to;
 
@@ -59,7 +59,7 @@ const getAtlasBusTrips = (params) => {
       + `&date=${formattedDate}`
       + `&passengers=1`;
 
-  return atlasBusTripsFetcher(url, {from: fromId, to: toId, operatorId});
+  return atlasBusTripsFetcher(url, {from: fromId, to: toId, operatorId, passengers});
 };
 
 module.exports = {

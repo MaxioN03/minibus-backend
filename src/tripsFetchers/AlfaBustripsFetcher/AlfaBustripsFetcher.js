@@ -3,7 +3,7 @@ const axios = require('axios');
 const ALFA_BUS_ARROW_TRIP_SPLITTER = ' -> ';
 
 const getAlfaBusTrips = (params) => {
-  let {from, to, date, operatorId} = params;
+  let {from, to, date, operatorId, passengers} = params;
   let {id: fromId, operatorKey: fromOperatorKey} = from;
   let {id: toId, operatorKey: toOperatorKey} = to;
 
@@ -31,7 +31,7 @@ const getAlfaBusTrips = (params) => {
               && tripTo === toOperatorKey
               && tripDate === date
               && +(new Date(datetime)) > +(new Date())
-              && seats > 0;
+              && seats > (passengers || 0);
         })
             .sort((trip1, trip2) => {
               let {datetime: datetime1} = trip1;
