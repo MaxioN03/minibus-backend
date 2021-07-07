@@ -1,25 +1,25 @@
 let ObjectID = require('mongodb').ObjectID;
 
-const getCollection = (db) => {
+const getCollection = (db: any) => {
   return db.db('minibus-app-backend').collection('stations');
 };
 
-const getAll = (db) => {
+export const getAll = (db: any) => {
   return getCollection(db).find({}).toArray()
-      .then(response => {
+      .then((response: any) => {
         return response;
       })
-      .catch(error => {
+      .catch((error: any) => {
         return error;
       });
 };
 
-const getOne = (db, id) => {
+export const getOne = (db: any, id: string) => {
   const details = {'_id': new ObjectID(id)};
 
   return new Promise((resolve, reject) => {
     getCollection(db)
-        .findOne(details, (error, response) => {
+        .findOne(details, (error: any, response: any) => {
           if (error) {
             reject(error);
           } else {
@@ -29,11 +29,11 @@ const getOne = (db, id) => {
   });
 };
 
-const create = (db, station) => {
+export const create = (db: any, station: any) => {
 
   return new Promise((resolve, reject) => {
     getCollection(db)
-        .insertOne(station, (error, response) => {
+        .insertOne(station, (error: any, response: any) => {
           if (error) {
             reject(error);
           } else {
@@ -43,12 +43,12 @@ const create = (db, station) => {
   });
 };
 
-const remove = (db, id) => {
+export const remove = (db: any, id: string) => {
   const details = {'_id': new ObjectID(id)};
 
   return new Promise((resolve, reject) => {
     getCollection(db)
-        .remove(details, (error, response) => {
+        .remove(details, (error: any, response: any) => {
           if (error) {
             reject(error);
           } else {
@@ -58,13 +58,13 @@ const remove = (db, id) => {
   });
 };
 
-const update = (db, id, station) => {
+export const update = (db: any, id: string, station: any) => {
 
   const details = {'_id': new ObjectID(id)};
 
   return new Promise((resolve, reject) => {
     getCollection(db)
-        .update(details, station, (error, response) => {
+        .update(details, station, (error: any, response: any) => {
           if (error) {
             reject(error);
           } else {
@@ -72,12 +72,4 @@ const update = (db, id, station) => {
           }
         });
   });
-};
-
-module.exports = {
-  getAll,
-  getOne,
-  create,
-  remove,
-  update,
 };
