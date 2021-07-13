@@ -1,22 +1,36 @@
 import {getTrips} from "../requests/tripsRequest";
+import {Express, Request, Response} from "express";
+import {MongoClient} from "mongodb";
 
-const getTripParamsFromReq = (req: any) => {
-  let params = req.body;
-  let {from, to, date, passengers} = params;
+export interface ITripsParams {
+    from: string,
+    to: string,
+    date: string,
+    passengers?: number
+}
 
-  return {from, to, date, passengers: +passengers};
+const getTripParamsFromReq = (req: Request): ITripsParams => {
+    let params = req.query;
+
+    let {from = '', to = '', date = '', passengers} = params;
+
+    return {
+        from: from.toString(),
+        to: to.toString(),
+        date: date.toString(),
+        passengers: passengers ? +passengers : 1
+    };
 };
 
-export default function(app: any, db: any) {
-  app.post('/trips', (req: any, res: any) => {
-    const tripParams = getTripParamsFromReq(req);
+export default function (app: Express, db: MongoClient) {
+    app.get('/trips', (req: Request, res: Response) => {
 
-    getTrips(db, tripParams)
-        .then((response: any) => {
-          res.send(response);
-        })
-        .catch((error: any) => {
-          res.status(500).send(`Error while getting trips:\n${error.stack}`);
-        });
-  });
+        getTrips(db, getTripParamsFromReq(req))
+            .then(response => {
+                res.send(response);
+            })
+            .catch(error => {
+                res.status(error.code || 500).send({error});
+            });
+    });
 };

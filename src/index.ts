@@ -1,4 +1,4 @@
-import express, { Express } from 'express';
+import express, {Express} from 'express';
 import mongodb from 'mongodb';
 import bodyParser from 'body-parser';
 import helmet from 'helmet';
@@ -16,7 +16,7 @@ const app: Express = express();
 app.use(cors());
 app.use(helmet());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 
 MongoClient.connect(DATABASE_URI, (err, database) => {
     if (err) return console.log(err);

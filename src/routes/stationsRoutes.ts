@@ -1,5 +1,8 @@
-import {Request, Response} from "express";
+import {Express, Request, Response} from "express";
+import {MongoClient} from "mongodb";
 import {createStation, getAllStations, getStation, removeStation, updateStation} from "../requests/stationsRequest";
+import {IStation} from "../DAO/stationsDAO";
+
 
 const getIdFromReq = (req: Request) => {
     return req.params.id;
@@ -9,14 +12,14 @@ const getStationFromReq = (req: Request) => {
     return {name: req.body.name, operatorsKeys: req.body.operatorsKeys};
 };
 
-export default function (app: any, db: any) {
+export default function (app: Express, db: MongoClient) {
     app.get('/stations', (req: Request, res: Response) => {
         getAllStations(db)
-            .then((response: any) => {
+            .then((response: IStation[]) => {
                 res.send(response);
             })
             .catch((error: any) => {
-                res.send(error);
+                res.status(error.code).send(error);
             });
     });
 
@@ -24,11 +27,11 @@ export default function (app: any, db: any) {
         const id = getIdFromReq(req);
 
         getStation(db, id)
-            .then((response: any) => {
+            .then((response: IStation) => {
                 res.send(response);
             })
             .catch((error: any) => {
-                res.send(error);
+                res.status(error.code).send(error);
             });
     });
 
@@ -36,11 +39,11 @@ export default function (app: any, db: any) {
         const station = getStationFromReq(req);
 
         createStation(db, station)
-            .then((response: any) => {
+            .then((response: string) => {
                 res.send(response);
             })
             .catch((error: any) => {
-                res.send(error);
+                res.status(error.code).send(error);
             });
     });
 
@@ -48,11 +51,11 @@ export default function (app: any, db: any) {
         const id = getIdFromReq(req);
 
         removeStation(db, id)
-            .then((response: any) => {
+            .then(response => {
                 res.send(response);
             })
             .catch((error: any) => {
-                res.send(error);
+                res.status(error.code).send(error);
             });
     });
 
@@ -61,11 +64,11 @@ export default function (app: any, db: any) {
         const station = getStationFromReq(req);
 
         updateStation(db, id, station)
-            .then((response: any) => {
+            .then(response => {
                 res.send(response);
             })
             .catch((error: any) => {
-                res.send(error);
+                res.status(error.code).send(error);
             });
     });
 };

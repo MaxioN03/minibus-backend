@@ -5,72 +5,75 @@ import {
     removeOperator,
     updateOperator
 } from "../requests/operatorsRequest";
+import {Express, Request, Response} from "express";
+import {MongoClient} from "mongodb";
+import {IOperator} from "../DAO/operatorsDAO";
 
-const getIdFromReq = (req: any) => {
+const getIdFromReq = (req: Request) => {
   return req.params.id;
 };
 
-const getOperatorFromReq = (req: any) => {
+const getOperatorFromReq = (req: Request) => {
   return {name: req.body.name};
 };
 
-export default function(app: any, db: any) {
-  app.get('/operators', (req: any, res: any) => {
+export default function(app: Express, db: MongoClient) {
+  app.get('/operators', (req: Request, res: Response) => {
     getAllOperators(db)
-        .then((response: any) => {
-          res.send(response);
+        .then((response: IOperator[]) => {
+            res.send(response);
         })
         .catch((error: any) => {
-          res.send(error);
+            res.status(error.code).send(error);
         });
   });
 
-  app.get('/operators/:id', (req: any, res: any) => {
+  app.get('/operators/:id', (req: Request, res: Response) => {
     const id = getIdFromReq(req);
 
     getOperator(db, id)
-        .then((response: any) => {
-          res.send(response);
+        .then((response: IOperator) => {
+            res.send(response);
         })
         .catch((error: any) => {
-          res.send(error);
+            res.status(error.code).send(error);
         });
   });
 
-  app.post('/operators', (req: any, res: any) => {
+  app.post('/operators', (req: Request, res: Response) => {
    const operator = getOperatorFromReq(req);
 
     createOperator(db, operator)
-        .then((response: any) => {
-          res.send(response);
+        .then((response: string) => {
+            res.send(response);
         })
         .catch((error: any) => {
-          res.send(error);
+            res.status(error.code).send(error);
         });
   });
 
-  app.delete('/operators/:id', (req: any, res: any) => {
+  app.delete('/operators/:id', (req: Request, res: Response) => {
     const id = getIdFromReq(req);
 
     removeOperator(db, id)
-        .then((response: any) => {
-          res.send(response);
+        .then(response => {
+            res.send(response);
         })
         .catch((error: any) => {
-          res.send(error);
+            res.status(error.code).send(error);
         });
   });
 
-  app.put('/operators/:id', (req: any, res: any) => {
+  app.put('/operators/:id', (req: Request, res: Response) => {
     const id = getIdFromReq(req);
    const operator = getOperatorFromReq(req);
 
     updateOperator(db, id, operator)
-        .then((response: any) => {
-          res.send(response);
+        .then(response => {
+            res.send(response);
         })
         .catch((error: any) => {
-          res.send(error);
+            res.status(error.code).send(error);
         });
   });
 };
