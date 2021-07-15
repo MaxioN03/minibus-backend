@@ -34,7 +34,7 @@ export interface ITrip {
     arrival?: string
 }
 
-const isDateGood = (date: string) => {
+const getDateError = (date: string) => {
     let dateObject = getDateFromRu(date);
     if (dateObject === null) {
         return false;
@@ -45,32 +45,50 @@ const isDateGood = (date: string) => {
     let tmpDateForMaxDate = new Date(todayTimestamp);
     let maxDate = tmpDateForMaxDate.setDate(tmpDateForMaxDate.getDate() + MAX_VISIBILITY_DAYS);
 
-    return +dateObject >= +todayTimestamp && +dateObject < +maxDate;
+    return +dateObject < +todayTimestamp
+        ? {
+            message: 'invalid date: too early',
+            display: 'Дата поездки слишком ранняя - в прошлое нам не заглянуть'
+        }
+        : +dateObject >= +maxDate
+            ? {
+                message: 'invalid date: too early',
+                display: `Дата поездки слишком поздняя и превышает ${MAX_VISIBILITY_DAYS} дней - будущее для нас слишком туманно`
+            }
+            : null;
 };
 
 export const getTrips = (db: MongoClient, params: ITripsParams): Promise<ITrip[]> => {
     let {from, to, date, passengers} = params;
 
     //Check params for errors
-    if (!isDateGood(date)) {
+    let dateError = getDateError(date);
+    if (dateError) {
         return Promise.reject({
             code: 400,
-            message: 'invalid date in parameters',
-            display: 'Неподходящая дата поездки'
+            message: dateError?.message,
+            display: dateError?.display
         });
     }
     if (!passengers || passengers < 1) {
         return Promise.reject({
             code: 400,
             message: 'invalid passengers number in parameters',
-            display: 'Неверное число пассажиров'
+            display: 'Нужно указать как минимум одного пассажира'
         });
     }
-    if (!ObjectId.isValid(from) || !ObjectId.isValid(to)) {
+    if (!ObjectId.isValid(from)) {
         return Promise.reject({
             code: 400,
             message: 'invalid from or to id in parameters',
-            display: 'Не получилось найти город'
+            display: 'Не получилось найти город отправления'
+        });
+    }
+    if (!ObjectId.isValid(to)) {
+        return Promise.reject({
+            code: 400,
+            message: 'invalid to id in parameters',
+            display: 'Не получилось найти город прибытия'
         });
     }
 

@@ -6,19 +6,18 @@ export interface ITripsParams {
     from: string,
     to: string,
     date: string,
-    passengers?: number
+    passengers: number
 }
 
 const getTripParamsFromReq = (req: Request): ITripsParams => {
     let params = req.query;
-
-    let {from = '', to = '', date = '', passengers} = params;
+    let {from = '', to = '', date = '', passengers = 1} = params;
 
     return {
         from: from.toString(),
         to: to.toString(),
         date: date.toString(),
-        passengers: passengers ? +passengers : 1
+        passengers: +passengers
     };
 };
 
