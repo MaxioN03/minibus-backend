@@ -39,7 +39,7 @@ export const getAlfaBusTrips = async (params: ITripParams): Promise<ITrip[]> => 
             return tripFrom === fromOperatorKey
                 && tripTo === toOperatorKey
                 && tripDate === date
-                && +(new Date(datetime)) > +(new Date())
+                && +new Date(datetime) > +new Date()
                 && seats > (passengers || 0);
         })
             .sort((trip1: IAlfaBusTrip, trip2: IAlfaBusTrip) => {

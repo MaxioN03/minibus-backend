@@ -10,7 +10,11 @@ export const getDateFromRu = (ruDateString: string) => {
     return new Date([month, day, year].join(DATE_SEPARATOR));
 };
 
-const wait = (interval: number) => new Promise(resolve => setTimeout(resolve, interval));
+const wait = (interval: number) => new Promise(resolve => {
+    return setTimeout(() => {
+        resolve(true);
+    }, interval);
+});
 export const asyncRetry = async <T>(fn: any, retriesLeft = 5, interval = 200): Promise<any> => {
     try {
         return await fn();

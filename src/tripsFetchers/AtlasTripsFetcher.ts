@@ -126,13 +126,16 @@ export const getAtlasBusTrips = async (params: ITripParams) => {
                     departure,
                     freeSeats,
                     price: price !== undefined && price !== null
-                        ? +price.toFixed(2)
+                        ? +(+price/Math.max(1, passengers)).toFixed(2)
                         : null,
                     agent: operatorId,
                     arrival
                 };
             })
-            .filter((trip: ITrip) => trip.freeSeats >= Math.max(1, passengers));
+            .filter((trip: ITrip) => {
+                return trip.freeSeats >= Math.max(1, passengers)
+                    && +new Date(trip.departure) > +new Date()
+            });
     } catch (error) {
         throw error;
     }

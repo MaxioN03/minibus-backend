@@ -144,9 +144,13 @@ export const getTrips = (db: MongoClient, params: ITripsParams): Promise<ITrip[]
                     }
                 });
 
-            return Promise.all(tripsFetchersArray);
+            return Promise.allSettled(tripsFetchersArray);
         })
-        .then(trips => {
+        .then(tripsSettles => {
+            let trips = tripsSettles
+                .filter(tripsSettle => tripsSettle.status === 'fulfilled')
+                .map(tripsSettle => tripsSettle.status === 'fulfilled' && tripsSettle?.value);
+
             let resultTrips = trips
                 .reduce((result, tripArray) => {
                     result.push(...tripArray);
@@ -168,6 +172,6 @@ export const getTrips = (db: MongoClient, params: ITripsParams): Promise<ITrip[]
                 code: 500,
                 message: error.message,
                 display: 'Не вышло получить поездки'
-            }
+            };
         });
 };
